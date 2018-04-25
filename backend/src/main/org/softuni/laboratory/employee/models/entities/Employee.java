@@ -1,7 +1,7 @@
 package org.softuni.laboratory.employee.models.entities;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.softuni.laboratory.analysis.models.Analysis;
+import org.softuni.laboratory.analysis.models.entities.Analysis;
 import org.softuni.laboratory.occurrence.models.Occurrence;
 import org.softuni.laboratory.core.entities.Role;
 import org.springframework.security.core.GrantedAuthority;

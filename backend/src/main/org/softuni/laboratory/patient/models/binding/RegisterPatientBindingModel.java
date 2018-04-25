@@ -1,9 +1,13 @@
 package org.softuni.laboratory.patient.models.binding;
 
+import java.util.Date;
+
 public class RegisterPatientBindingModel {
     private String email;
 
-    private String password;
+    private boolean isConultation;
+
+    private Date dateOfOccurrence;
 
     public RegisterPatientBindingModel() {
     }
@@ -16,11 +20,19 @@ public class RegisterPatientBindingModel {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isConultation() {
+        return isConultation;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setConultation(boolean conultation) {
+        isConultation = conultation;
+    }
+
+    public Date getDateOfOccurrence() {
+        return dateOfOccurrence;
+    }
+
+    public void setDateOfOccurrence(Date dateOfOccurrence) {
+        this.dateOfOccurrence = dateOfOccurrence;
     }
 }

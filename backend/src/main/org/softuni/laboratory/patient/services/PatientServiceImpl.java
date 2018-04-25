@@ -25,8 +25,6 @@ public class PatientServiceImpl implements PatientService{
     public boolean save(RegisterPatientBindingModel patientModel) {
         Patient patient = this.modelMapper.map(patientModel, Patient.class);
 
-        patient.setPassword(this.bCryptPasswordEncoder.encode(patient.getPassword()));
-
         this.patientRepository.save(patient);
 
         return true;
@@ -37,14 +35,4 @@ public class PatientServiceImpl implements PatientService{
         return this.patientRepository.findByEmail(email) != null;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Patient patient = this.patientRepository.findByEmail(email);
-
-        if(patient == null) {
-            throw new UsernameNotFoundException("Patient was not found.");
-        }
-
-        return patient;
-    }
 }

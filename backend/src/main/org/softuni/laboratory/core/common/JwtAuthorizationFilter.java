@@ -1,6 +1,7 @@
 package org.softuni.laboratory.core.common;
 
 import io.jsonwebtoken.Jwts;
+import org.softuni.laboratory.employee.services.EmployeeService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +16,9 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final EmployeeService userDetailsService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, EmployeeService userDetailsService) {
         super(authenticationManager);
         this.userDetailsService = userDetailsService;
     }
