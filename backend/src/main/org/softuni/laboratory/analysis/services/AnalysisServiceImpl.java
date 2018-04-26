@@ -23,9 +23,9 @@ public class AnalysisServiceImpl implements AnalysisService{
     }
 
     @Override
-    public boolean save(AnalysisCreatedBindingModel analysisModel, EmployeeService employeeService, String username) {
+    public boolean save(AnalysisCreatedBindingModel analysisModel, EmployeeService employeeService) {
         Analysis analysis = this.modelMapper.map(analysisModel, Analysis.class);
-        analysis.setEmployee(employeeService.findByUsername(username));
+        analysis.setEmployee(employeeService.findByUsername(analysisModel.getName()));
         this.analysisRepository.save(analysis);
         return true;
     }
@@ -48,5 +48,17 @@ public class AnalysisServiceImpl implements AnalysisService{
         }
         AnalyzesViewModel analyzesViewModel = this.modelMapper.map(analysis, AnalyzesViewModel.class);
         return analyzesViewModel;
+    }
+
+    @Override
+    public boolean analysesExist(String name) {
+        return this.analysisRepository.findByName(name)!= null;
+    }
+
+    @Override
+    public List<String> getAllAnalyzesName() {
+        List<Analysis> allAnalyzes = this.analysisRepository.findAll();
+        List<String> analyzesName = allAnalyzes.stream().map(Analysis::getName).collect(Collectors.toList());
+        return analyzesName;
     }
 }

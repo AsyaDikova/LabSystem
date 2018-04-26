@@ -35,4 +35,8 @@ public class PatientServiceImpl implements PatientService{
         return this.patientRepository.findByEmail(email) != null;
     }
 
+    @Override
+    public Patient findByEmail(String email) {
+        return this.patientRepository.findByEmail(email);
+    }
 }

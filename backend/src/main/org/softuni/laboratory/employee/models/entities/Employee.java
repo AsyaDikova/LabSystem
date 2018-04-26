@@ -2,8 +2,8 @@ package org.softuni.laboratory.employee.models.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.softuni.laboratory.analysis.models.entities.Analysis;
-import org.softuni.laboratory.occurrence.models.Occurrence;
-import org.softuni.laboratory.core.entities.Role;
+import org.softuni.laboratory.occurrence.models.entities.Occurrence;
+import org.softuni.laboratory.core.entities.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -42,9 +42,9 @@ public class Employee implements UserDetails {
     private List<Analysis> analyzes;
 
     public Employee() {
-        this.roles = new ArrayList<Role>();
-        this.analyzes = new ArrayList<Analysis>();
-        this.occurrences = new ArrayList<Occurrence>();
+        this.roles = new ArrayList<>();
+        this.analyzes = new ArrayList<>();
+        this.occurrences = new ArrayList<>();
     }
 
     @Override
@@ -109,5 +109,13 @@ public class Employee implements UserDetails {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

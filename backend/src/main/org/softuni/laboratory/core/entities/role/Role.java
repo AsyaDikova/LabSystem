@@ -1,4 +1,4 @@
-package org.softuni.laboratory.core.entities;
+package org.softuni.laboratory.core.entities.role;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;

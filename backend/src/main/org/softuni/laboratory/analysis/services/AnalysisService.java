@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface AnalysisService {
 
-    boolean save(AnalysisCreatedBindingModel analysis, EmployeeService employeeService, String username);
+    boolean save(AnalysisCreatedBindingModel analysis, EmployeeService employeeService);
 
     List<AnalyzesViewModel> getAllAnalyzes();
 
     AnalyzesViewModel getOneById(String id);
+
+    boolean analysesExist(String name);
+
+    List<String> getAllAnalyzesName();
 }

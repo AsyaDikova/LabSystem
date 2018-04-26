@@ -3,13 +3,16 @@ package org.softuni.laboratory.analysis.controllers;
 import com.google.gson.Gson;
 import org.softuni.laboratory.analysis.models.binding.AnalysisCreatedBindingModel;
 import org.softuni.laboratory.analysis.models.binding.AnalyzesViewModel;
+import org.softuni.laboratory.analysis.models.entities.Analysis;
 import org.softuni.laboratory.analysis.services.AnalysisService;
+import org.softuni.laboratory.core.entities.exception.ErrorMessage;
 import org.softuni.laboratory.employee.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class AnalysisController {
@@ -26,10 +29,20 @@ public class AnalysisController {
         this.gson = gson;
     }
 
-    @PostMapping("/analyses/add")
-    public ResponseEntity<?> addAnalyses(@RequestBody AnalysisCreatedBindingModel addAnalysisBindingModel, Principal principal) {
+    @GetMapping(value = "/analyses/add", produces = "application/json")
+    public ResponseEntity<?> getAddAnalyses(){
+        List<String> allEmployeeNames = this.employeeService.getAllEmployeeByUsername();
+        return new ResponseEntity<>(this.gson.toJson(allEmployeeNames), HttpStatus.OK);
+    }
 
-        if (this.analysisService.save(addAnalysisBindingModel, this.employeeService, principal.getName())) {
+    @PostMapping(value = "/analyses/add", produces = "application/json")
+    public ResponseEntity<?> addAnalyses(@RequestBody AnalysisCreatedBindingModel addAnalysisBindingModel) {
+
+        if(this.analysisService.analysesExist(addAnalysisBindingModel.getName())){
+            return new ResponseEntity<>(new ErrorMessage("Analyses already exist", false), HttpStatus.BAD_REQUEST);
+        }
+
+        if (this.analysisService.save(addAnalysisBindingModel, this.employeeService)) {
             return new ResponseEntity<>("Successfully create analysis.", HttpStatus.OK);
         }
 

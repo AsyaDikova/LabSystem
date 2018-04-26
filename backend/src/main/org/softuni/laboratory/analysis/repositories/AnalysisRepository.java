@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
+    Analysis findByName(String name);
 }

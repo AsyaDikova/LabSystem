@@ -17,31 +17,43 @@ public class Patient{
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "is_consultation")
-    private boolean isConsultation;
+    @Column
+    private String telephone;
 
-    @Column(name="date_of_occurrence")
-    private Date dateOfOccurrence;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     public Patient() {
     }
 
-    public boolean isConsultation() {
-        return isConsultation;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setConsultation(boolean consultation) {
-        isConsultation = consultation;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
-    public Date getDateOfOccurrence() {
-        return dateOfOccurrence;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setDateOfOccurrence(Date dateOfOccurrence) {
-        this.dateOfOccurrence = dateOfOccurrence;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

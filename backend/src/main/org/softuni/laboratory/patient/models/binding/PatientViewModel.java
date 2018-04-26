@@ -1,8 +1,6 @@
 package org.softuni.laboratory.patient.models.binding;
 
-import java.util.Date;
-
-public class RegisterPatientBindingModel {
+public class PatientViewModel {
     private String email;
 
     private String telephone;
@@ -11,7 +9,7 @@ public class RegisterPatientBindingModel {
 
     private String lastName;
 
-    public RegisterPatientBindingModel() {
+    public PatientViewModel() {
     }
 
     public String getEmail() {

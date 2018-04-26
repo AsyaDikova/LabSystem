@@ -1,5 +1,6 @@
 package org.softuni.laboratory.employee.controllers;
 
+import org.softuni.laboratory.core.entities.exception.ErrorMessage;
 import org.softuni.laboratory.employee.models.binding.RegisterEmployeeBindingModel;
 import org.softuni.laboratory.employee.services.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class EmployeeController {
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<?> register(@RequestBody RegisterEmployeeBindingModel employeeBindingModel) {
         if (this.employeeService.employeeExists(employeeBindingModel.getUsername())) {
-            return new ResponseEntity<>("Employee already exists.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorMessage("Employee already exist", false), HttpStatus.BAD_REQUEST);
         }
 
         if (this.employeeService.save(employeeBindingModel)) {
@@ -31,6 +32,7 @@ public class EmployeeController {
 
         return new ResponseEntity<>("Something went wrong while processing your request...", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 }
 

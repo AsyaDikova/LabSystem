@@ -9,6 +9,8 @@ public class AnalysisCreatedBindingModel {
 
     private String description;
 
+    private String employeeName;
+
     public AnalysisCreatedBindingModel() {
     }
 
@@ -34,5 +36,13 @@ public class AnalysisCreatedBindingModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 }
