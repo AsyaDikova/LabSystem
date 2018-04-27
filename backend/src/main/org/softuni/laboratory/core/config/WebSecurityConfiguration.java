@@ -44,6 +44,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employee/register").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
+                .logout().logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .permitAll()
+                .and()
                 .addFilter(new JwtAuthenticationFilterEmployee(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.employeeService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

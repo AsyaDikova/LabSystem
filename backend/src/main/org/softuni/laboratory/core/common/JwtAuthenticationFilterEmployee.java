@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -37,7 +38,7 @@ public class JwtAuthenticationFilterEmployee extends UsernamePasswordAuthenticat
                     new UsernamePasswordAuthenticationToken(
                             employee.getUsername(),
                             employee.getPassword(),
-                            new ArrayList<>())
+                            employee.getAuthorities())
             );
         } catch(IOException e) {
             throw new RuntimeException(e);
@@ -49,8 +50,11 @@ public class JwtAuthenticationFilterEmployee extends UsernamePasswordAuthenticat
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+
         String token = Jwts.builder()
                 .setSubject(((Employee) authResult.getPrincipal()).getUsername())
+                .claim("isAdmin", authResult.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")))
+                .claim("isRester", authResult.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_REGISTRAR")))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_DURATION))
                 .signWith(SignatureAlgorithm.HS256, JwtSecurityConstants.SECRET.getBytes())
                 .compact();

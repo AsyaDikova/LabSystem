@@ -1,16 +1,15 @@
 package org.softuni.laboratory.occurrence.controllers;
 
 import org.softuni.laboratory.core.entities.exception.ErrorMessage;
+import org.softuni.laboratory.core.entities.exception.SuccessMessage;
 import org.softuni.laboratory.employee.services.EmployeeService;
 import org.softuni.laboratory.occurrence.models.binding.CreateOccurrenceBindingModel;
+import org.softuni.laboratory.occurrence.models.binding.OccurrenceViewModel;
 import org.softuni.laboratory.occurrence.services.OccurrenceService;
 import org.softuni.laboratory.patient.services.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/occurrence")
@@ -22,28 +21,40 @@ public class OccurrenceController {
 
     private final OccurrenceService occurrenceService;
 
-    public OccurrenceController(PatientService patientService, EmployeeService employeeService, OccurrenceService occurrenceService) {
+    private final ErrorMessage errorMessage;
+
+    private final SuccessMessage successMessage;
+
+    public OccurrenceController(PatientService patientService, EmployeeService employeeService, OccurrenceService occurrenceService, ErrorMessage errorMessage, SuccessMessage successMessage) {
         this.patientService = patientService;
         this.employeeService = employeeService;
         this.occurrenceService = occurrenceService;
+        this.errorMessage = errorMessage;
+        this.successMessage = successMessage;
     }
 
 
     @PostMapping(value = "/create", produces = "application/json")
-    public ResponseEntity<?> addAnalyses(@RequestBody CreateOccurrenceBindingModel occurrenceBindingModel){
+    public ResponseEntity<?> addOccurrences(@ModelAttribute CreateOccurrenceBindingModel occurrenceBindingModel){
         if(!this.patientService.patientExists(occurrenceBindingModel.getEmailPatient())){
-            return new ResponseEntity<>(new ErrorMessage("Patient not exist", false), HttpStatus.BAD_REQUEST);
+            this.errorMessage.setMessage("Patient not exist");
+            return new ResponseEntity<>(this.errorMessage, HttpStatus.BAD_REQUEST);
         }
 
         if(!this.employeeService.employeeExists(occurrenceBindingModel.getUsernameEmployee())){
-            return new ResponseEntity<>(new ErrorMessage("Employee not exist", false), HttpStatus.BAD_REQUEST);
+            this.errorMessage.setMessage("Employee not exist");
+            return new ResponseEntity<>(this.errorMessage, HttpStatus.BAD_REQUEST);
         }
 
-        if(this.occurrenceService.save(occurrenceBindingModel, this.employeeService, this.patientService)){
-            return new ResponseEntity<>(new ErrorMessage("Occurrence is success create", true), HttpStatus.CREATED);
+        OccurrenceViewModel saveObject = this.occurrenceService.save(occurrenceBindingModel, this.employeeService, this.patientService);
+
+        if(saveObject != null){
+            this.successMessage.setObject(saveObject);
+            return new ResponseEntity<>(this.successMessage, HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>("Something went wrong while processing your request...", HttpStatus.INTERNAL_SERVER_ERROR);
+        this.errorMessage.setMessage("Something went wrong while processing your request...");
+        return new ResponseEntity<>(this.errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 }

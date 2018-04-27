@@ -1,6 +1,7 @@
 package org.softuni.laboratory.employee.controllers;
 
 import org.softuni.laboratory.core.entities.exception.ErrorMessage;
+import org.softuni.laboratory.core.entities.exception.SuccessMessage;
 import org.softuni.laboratory.employee.models.binding.RegisterEmployeeBindingModel;
 import org.softuni.laboratory.employee.services.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -16,21 +17,31 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    private final ErrorMessage errorMessage;
+
+    private final SuccessMessage successMessage;
+
+    public EmployeeController(EmployeeService employeeService, ErrorMessage errorMessage, SuccessMessage successMessage) {
         this.employeeService = employeeService;
+        this.errorMessage = errorMessage;
+        this.successMessage = successMessage;
     }
 
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<?> register(@RequestBody RegisterEmployeeBindingModel employeeBindingModel) {
+
         if (this.employeeService.employeeExists(employeeBindingModel.getUsername())) {
-            return new ResponseEntity<>(new ErrorMessage("Employee already exist", false), HttpStatus.BAD_REQUEST);
+            this.errorMessage.setMessage("Employee already exist");
+            return new ResponseEntity<>(this.errorMessage, HttpStatus.BAD_REQUEST);
         }
 
         if (this.employeeService.save(employeeBindingModel)) {
-            return new ResponseEntity<>("Successfully registered employee.", HttpStatus.OK);
+            this.successMessage.setObject(employeeBindingModel);
+            return new ResponseEntity<>(this.successMessage, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>("Something went wrong while processing your request...", HttpStatus.INTERNAL_SERVER_ERROR);
+        this.errorMessage.setMessage("Something went wrong while processing your request...");
+        return new ResponseEntity<>(this.errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

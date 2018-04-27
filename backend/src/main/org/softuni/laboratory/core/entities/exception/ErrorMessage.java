@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ErrorMessage {
 
     private String message;
-    private boolean isSuccess;
+    private boolean success;
 
     public ErrorMessage() {
-    }
-
-    public ErrorMessage(String message, boolean isSuccess) {
-        this.message = message;
-        this.isSuccess = isSuccess;
+        this.setSuccess(false);
     }
 
     public String getMessage() {
@@ -24,11 +20,11 @@ public class ErrorMessage {
         this.message = message;
     }
 
-    public boolean getIsSuccess() {
-        return isSuccess;
+    public boolean getSuccess() {
+        return success;
     }
 
-    public void setIsSuccess(boolean isSuccess) {
-        this.isSuccess = isSuccess;
+    private void setSuccess(boolean isSuccess) {
+        this.success = isSuccess;
     }
 }

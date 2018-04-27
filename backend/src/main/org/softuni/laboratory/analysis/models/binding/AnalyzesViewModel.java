@@ -1,6 +1,9 @@
 package org.softuni.laboratory.analysis.models.binding;
 
 public class AnalyzesViewModel {
+
+    private String id;
+
     private String name;
 
     private Double price;
@@ -8,6 +11,14 @@ public class AnalyzesViewModel {
     private String description;
 
     public AnalyzesViewModel() {
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

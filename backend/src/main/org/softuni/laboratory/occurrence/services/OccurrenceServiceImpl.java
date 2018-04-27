@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.softuni.laboratory.employee.models.entities.Employee;
 import org.softuni.laboratory.employee.services.EmployeeService;
 import org.softuni.laboratory.occurrence.models.binding.CreateOccurrenceBindingModel;
+import org.softuni.laboratory.occurrence.models.binding.OccurrenceViewModel;
 import org.softuni.laboratory.occurrence.models.entities.Occurrence;
 import org.softuni.laboratory.occurrence.repositories.OccurrenceRepository;
 import org.softuni.laboratory.patient.models.entities.Patient;
@@ -27,7 +28,7 @@ public class OccurrenceServiceImpl implements OccurrenceService{
 
 
     @Override
-    public boolean save(CreateOccurrenceBindingModel occurrenceBindingModel, EmployeeService employeeService, PatientService patientService) {
+    public OccurrenceViewModel save(CreateOccurrenceBindingModel occurrenceBindingModel, EmployeeService employeeService, PatientService patientService) {
         Patient patient = patientService.findByEmail(occurrenceBindingModel.getEmailPatient());
         Employee employee = employeeService.findByUsername(occurrenceBindingModel.getUsernameEmployee());
 
@@ -35,8 +36,8 @@ public class OccurrenceServiceImpl implements OccurrenceService{
         occurrence.setEmployee(employee);
         occurrence.setPatient(patient);
 
-        this.occurrenceRepository.save(occurrence);
+        Occurrence occurrenceToSave = this.occurrenceRepository.save(occurrence);
 
-        return true;
+        return this.modelMapper.map(occurrenceToSave, OccurrenceViewModel.class);
     }
 }

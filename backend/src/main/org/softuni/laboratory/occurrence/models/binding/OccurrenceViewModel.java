@@ -1,16 +1,12 @@
 package org.softuni.laboratory.occurrence.models.binding;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class CreateOccurrenceBindingModel {
-
-    @NotNull
-    private String emailPatient;
+public class OccurrenceViewModel {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -21,23 +17,12 @@ public class CreateOccurrenceBindingModel {
     private int hours;
 
     @NotNull
-    private String usernameEmployee;
-
-    @NotNull
     private boolean isConsultation;
 
     @NotNull
     private String analysesName;
 
-    public CreateOccurrenceBindingModel() {
-    }
-
-    public String getEmailPatient() {
-        return emailPatient;
-    }
-
-    public void setEmailPatient(String emailPatient) {
-        this.emailPatient = emailPatient;
+    public OccurrenceViewModel() {
     }
 
     public LocalDate getDate() {
@@ -48,12 +33,12 @@ public class CreateOccurrenceBindingModel {
         this.date = date;
     }
 
-    public String getUsernameEmployee() {
-        return usernameEmployee;
+    public int getHours() {
+        return hours;
     }
 
-    public void setUsernameEmployee(String usernameEmployee) {
-        this.usernameEmployee = usernameEmployee;
+    public void setHours(int hours) {
+        this.hours = hours;
     }
 
     public boolean isConsultation() {
@@ -64,20 +49,11 @@ public class CreateOccurrenceBindingModel {
         isConsultation = consultation;
     }
 
-
     public String getAnalysesName() {
         return analysesName;
     }
 
     public void setAnalysesName(String analysesName) {
         this.analysesName = analysesName;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public void setHours(int hours) {
-        this.hours = hours;
     }
 }
